@@ -70,47 +70,49 @@ class PHPRandom
     public static function getBinary($length = 32)
     {
         if ($length < 1) return '';
+        
+        // There's not much point reading more than 256 bits of entropy from any single source.
+        
+        $capped_length = min($length, 32);
+        
+        // As usual, Windows requires special consideration.
+        
+        $is_windows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+        
+        // Variables to store state during entropy collection.
+        
         $entropy = array();
         $sources = array();
         $total_strength = 0;
         $required_strength = 5;
         
-        // Try getting entropy from the OpenSSL extension.
+        // Try getting entropy from various sources that are known to be good.
         
-        if ($total_strength < $required_strength && function_exists('openssl_random_pseudo_bytes'))
+        if (function_exists('openssl_random_pseudo_bytes') && (!$is_windows || version_compare(PHP_VERSION, '5.3.4', '>=')))
         {
-            $entropy[] = openssl_random_pseudo_bytes($length);
+            $entropy[] = openssl_random_pseudo_bytes($capped_length, $crypto_strong);
             $sources[] = 'openssl';
-            $total_strength += 3;
+            $total_strength += $crypto_strong ? 3 : 1;
         }
-        
-        // Try getting entropy from the mcrypt extension using /dev/urandom.
-        
-        if ($total_strength < $required_strength && function_exists('mcrypt_create_iv') && defined('MCRYPT_DEV_URANDOM'))
+        elseif (function_exists('mcrypt_create_iv') && defined('MCRYPT_DEV_URANDOM'))
         {
-            $entropy[] = mcrypt_create_iv($length, MCRYPT_DEV_URANDOM);
+            $entropy[] = mcrypt_create_iv($capped_length, MCRYPT_DEV_URANDOM);
             $sources[] = 'mcrypt';
-            $total_strength += 3;
+            $total_strength += 4;
         }
-        
-        // Try getting entropy from /dev/urandom directly.
-        
-        if ($total_strength < $required_strength && !strncmp(strtoupper(PHP_OS), 'LINUX', 5) && @is_readable('/dev/urandom'))
+        elseif (!$is_windows && file_exists('/dev/urandom') && is_readable('/dev/urandom'))
         {
-            $entropy[] = fread($fp = fopen('/dev/urandom', 'rb'), $length); fclose($fp);
+            $entropy[] = fread($fp = fopen('/dev/urandom', 'rb'), $capped_length); fclose($fp);
             $sources[] = 'urandom';
-            $total_strength += 3;
+            $total_strength += 4;
         }
-        
-        // Try getting entropy from CAPICOM.Utilities.getRandom() if we're on Windows.
-        
-        if ($total_strength < $required_strength && !strncmp(strtoupper(PHP_OS), 'WIN', 3) && class_exists('COM'))
+        elseif ($is_windows && class_exists('COM'))
         {
             try
             {
                 $capicom = new COM('CAPICOM.Utilities.1');
-                $data = $capicom->GetRandom($length, 0);
-                if (strlen($data) === $length)
+                $data = $capicom->GetRandom($capped_length, 0);
+                if (strlen($data) === $capped_length)
                 {
                     $entropy[] = base64_decode($data);
                     $sources[] = 'capicom';
@@ -128,7 +130,7 @@ class PHPRandom
         while ($total_strength < $required_strength)
         {
             $rand = '';
-            for ($i = 0; $i < $length; $i += 2)
+            for ($i = 0; $i < $capped_length; $i += 4)
             {
                 $rand .= pack('L', rand(0, 0x7fffffff) ^ mt_rand(0, 0x7fffffff));
             }

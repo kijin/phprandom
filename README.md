@@ -61,7 +61,7 @@ Supported sources, in order of preference:
 
   - `openssl_random_pseudo_bytes()`
   - `mcrypt_create_iv()`
-  - `/dev/urandom` (Linux only)
+  - `/dev/urandom` (Linux/Unix only)
   - `CAPICOM.Utilities.getRandom()` (Windows only)
   - `rand()` xor `mt_rand()`
 
