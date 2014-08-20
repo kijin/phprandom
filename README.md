@@ -69,3 +69,8 @@ Supported mixers, in order of preference:
 
   - `hash_hmac()` with SHA-512
   - `sha1()`
+
+License
+-------
+
+PHPRandom is free software released under the MIT license.
