@@ -161,7 +161,7 @@ class PHPRandom
             {
                 foreach ($entropy as $item)
                 {
-                    $mixer_content = sha1($item . $mixer_content . $i . uniqud(), true);
+                    $mixer_content = sha1($item . $mixer_content . $i . microtime(), true);
                 }
                 $mixer_output .= $mixer_content;
             }
