@@ -98,7 +98,7 @@ class PHPRandom_UnitTest extends PHPUnit_Framework_TestCase
         for ($i = 1; $i <= $count; $i++)
         {
             $len = mt_rand(2, 256);
-            $str = PHPRandom::getRandomBytes($len);
+            $str = PHPRandom::getBinary($len);
             $this->assertEquals($len, strlen($str));
             $buckets[ord($str[0])]++;
         }
