@@ -8,6 +8,19 @@ with PHP 5.0 and above, and comes with a much simpler interface.
 Seriously, PHP ain't Java. Why do we need a dozen files and classes
 inheriting one another just to get some random bytes? :p
 
+How to Install
+--------------
+
+Traditional method:
+
+    include 'phprandom.php';
+
+Composer:
+
+    "require": {
+        "kijin/phprandom": "dev-master"
+    }
+
 How to Use
 ----------
 
