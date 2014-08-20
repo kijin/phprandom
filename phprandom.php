@@ -106,9 +106,13 @@ class PHPRandom
             try
             {
                 $capicom = new COM('CAPICOM.Utilities.1');
-                $entropy[] = $capicom->GetRandom($length, 1);
-                $sources[] = 'capicom';
-                $total_strength += 2;
+                $data = $capicom->GetRandom($length, 0);
+                if (strlen($data) === $length)
+                {
+                    $entropy[] = base64_decode($data);
+                    $sources[] = 'capicom';
+                    $total_strength += 2;
+                }
             }
             catch (Exception $e)
             {
