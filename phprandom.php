@@ -39,7 +39,7 @@ class PHPRandom
     public static function getInteger($min = 0, $max = 0x7fffffff)
     {
         $bytes_required = min(4, ceil(log($max - $min, 2) / 8) + 1);
-        $bytes = self::getRandomBytes($bytes_required);
+        $bytes = self::getBinary($bytes_required);
         $offset = hexdec(bin2hex($bytes)) % ($max - $min);
         return floor($min + $offset);
     }
@@ -50,7 +50,7 @@ class PHPRandom
     {
         if ($length < 1) return '';
         $bytes_required = ceil($length * 3 / 4);
-        $bytes = self::getRandomBytes($bytes_required);
+        $bytes = self::getBinary($bytes_required);
         $replacements = chr(rand(65, 90)) . chr(rand(97, 122)) . strval(rand(0, 9));
         return substr(strtr(base64_encode($bytes), '+/=', $replacements), 0, $length);
     }
@@ -61,13 +61,13 @@ class PHPRandom
     {
         if ($length < 1) return '';
         $bytes_required = ceil($length / 2);
-        $bytes = self::getRandomBytes($bytes_required);
+        $bytes = self::getBinary($bytes_required);
         return substr(bin2hex($bytes), 0, $length);
     }
     
     // Get a random binary string of the specified length.
     
-    public static function getRandomBytes($length = 32)
+    public static function getBinary($length = 32)
     {
         if ($length < 1) return '';
         $entropy = array();
@@ -173,7 +173,7 @@ class PHPRandom
     
     public static function listSources()
     {
-        if (!count(self::$_sources)) self::getRandomBytes(4);
+        if (!count(self::$_sources)) self::getBinary(4);
         return self::$_sources;
     }
 }

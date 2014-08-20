@@ -38,7 +38,7 @@ Get a random hexademical string (0-9, a-f):
 
 Get a random binary string:
 
-    $random = PHPRandom::getRandomBytes($length);
+    $random = PHPRandom::getBinary($length);
 
 Find out where your precious entropy comes from:
 
