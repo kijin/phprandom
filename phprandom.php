@@ -40,7 +40,7 @@ class PHPRandom
     {
         $bytes_required = min(4, ceil(log($max - $min, 2) / 8) + 1);
         $bytes = self::getBinary($bytes_required);
-        $offset = hexdec(bin2hex($bytes)) % ($max - $min);
+        $offset = abs(hexdec(bin2hex($bytes)) % ($max - $min));
         return floor($min + $offset);
     }
     
