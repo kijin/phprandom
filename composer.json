@@ -1,0 +1,19 @@
+{
+    "name": "kijin/phprandom",
+    "description": "Just another random number/string generator for PHP 5",
+    "type": "library",
+    "keywords": ["random"],
+    "homepage": "https://github.com/kijin/phprandom",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kijin Sung",
+            "email": "kijin@kijinsung.com",
+            "homepage": "http://www.kijinsung.com/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.0.0"
+    }
+}
