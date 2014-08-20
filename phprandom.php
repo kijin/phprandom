@@ -48,6 +48,7 @@ class PHPRandom
     
     public static function getString($length = 32)
     {
+        if ($length < 1) return '';
         $bytes_required = ceil($length * 3 / 4);
         $bytes = self::getRandomBytes($bytes_required);
         $replacements = chr(rand(65, 90)) . chr(rand(97, 122)) . strval(rand(0, 9));
@@ -58,6 +59,7 @@ class PHPRandom
     
     public static function getHexString($length = 32)
     {
+        if ($length < 1) return '';
         $bytes_required = ceil($length / 2);
         $bytes = self::getRandomBytes($bytes_required);
         return substr(bin2hex($bytes), 0, $length);
@@ -67,6 +69,7 @@ class PHPRandom
     
     public static function getRandomBytes($length = 32)
     {
+        if ($length < 1) return '';
         $entropy = array();
         $sources = array();
         $total_strength = 0;
