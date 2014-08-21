@@ -60,9 +60,9 @@ using the best mixing algorithm that your system supports.
 Supported sources, in order of preference:
 
   - `openssl_random_pseudo_bytes()`
-  - `mcrypt_create_iv()`
+  - `mcrypt_create_iv()` with `MCRYPT_DEV_URANDOM`
+  - `mcrypt_create_iv()` with `MCRYPT_RAND` (Windows only)
   - `/dev/urandom` (Linux/Unix only)
-  - `CAPICOM.Utilities.getRandom()` (Windows only)
   - `rand()` xor `mt_rand()`
 
 Supported mixers, in order of preference:

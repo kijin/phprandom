@@ -97,32 +97,20 @@ class PHPRandom
         elseif (function_exists('mcrypt_create_iv') && defined('MCRYPT_DEV_URANDOM'))
         {
             $entropy[] = mcrypt_create_iv($capped_length, MCRYPT_DEV_URANDOM);
-            $sources[] = 'mcrypt';
+            $sources[] = 'mcrypt_dev_urandom';
             $total_strength += 4;
+        }
+        elseif ($is_windows && function_exists('mcrypt_create_iv') && defined('MCRYPT_RAND'))
+        {
+            $entropy[] = mcrypt_create_iv($capped_length, MCRYPT_RAND);
+            $sources[] = 'mcrypt_rand';
+            $total_strength += 2;
         }
         elseif (!$is_windows && file_exists('/dev/urandom') && is_readable('/dev/urandom'))
         {
             $entropy[] = fread($fp = fopen('/dev/urandom', 'rb'), $capped_length); fclose($fp);
-            $sources[] = 'urandom';
+            $sources[] = 'dev_urandom';
             $total_strength += 4;
-        }
-        elseif ($is_windows && class_exists('COM'))
-        {
-            try
-            {
-                $capicom = new COM('CAPICOM.Utilities.1');
-                $data = $capicom->GetRandom($capped_length, 0);
-                if (strlen($data) === $capped_length)
-                {
-                    $entropy[] = base64_decode($data);
-                    $sources[] = 'capicom';
-                    $total_strength += 2;
-                }
-            }
-            catch (Exception $e)
-            {
-                // no-op
-            }
         }
         
         // Supplement with multiple calls to rand() and mt_rand().
@@ -135,7 +123,7 @@ class PHPRandom
                 $rand .= pack('L', rand(0, 0x7fffffff) ^ mt_rand(0, 0x7fffffff));
             }
             $entropy[] = $rand;
-            $sources[] = 'mtrand';
+            $sources[] = 'mt_rand';
             $total_strength += 1;
         }
         
