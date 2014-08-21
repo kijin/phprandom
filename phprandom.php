@@ -30,6 +30,10 @@
 
 class PHPRandom
 {
+    // Le version, what else?
+    
+    const VERSION = '1.0.0';
+    
     // Remember the list of sources from the last operation.
     
     protected static $_sources = array();
