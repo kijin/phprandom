@@ -32,7 +32,7 @@ class PHPRandom
 {
     // Le version, what else?
     
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
     
     // Remember the list of sources from the last operation.
     
@@ -92,7 +92,7 @@ class PHPRandom
         
         // Try getting entropy from various sources that are known to be good.
         
-        if (function_exists('openssl_random_pseudo_bytes') && (!$is_windows || version_compare(PHP_VERSION, '5.3.4', '>=')))
+        if (function_exists('openssl_random_pseudo_bytes') && (!$is_windows || version_compare(PHP_VERSION, '5.4', '>=')))
         {
             $entropy[] = openssl_random_pseudo_bytes($capped_length, $crypto_strong);
             $sources[] = 'openssl';
