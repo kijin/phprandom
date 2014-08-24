@@ -32,7 +32,7 @@ class PHPRandom
 {
     // Le version, what else?
     
-    const VERSION = '1.0.1';
+    const VERSION = '1.0.2';
     
     // Remember the list of sources from the last operation.
     
@@ -98,7 +98,7 @@ class PHPRandom
             $sources[] = 'openssl';
             $total_strength += $crypto_strong ? 3 : 1;
         }
-        elseif (function_exists('mcrypt_create_iv') && defined('MCRYPT_DEV_URANDOM'))
+        elseif (function_exists('mcrypt_create_iv') && (!$is_windows || version_compare(PHP_VERSION, '5.3.7', '>=')))
         {
             $entropy[] = mcrypt_create_iv($capped_length, MCRYPT_DEV_URANDOM);
             $sources[] = 'mcrypt_dev_urandom';
