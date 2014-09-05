@@ -32,19 +32,19 @@ class PHPRandom
 {
     // Le version, what else?
     
-    const VERSION = '1.0.2';
+    const VERSION = '1.1.0';
     
     // Remember the list of sources from the last operation.
     
     protected static $_sources = array();
     
-    // Get a random number between $min and $max - 1.
+    // Get a random number between $min and $max (inclusive).
     
     public static function getInteger($min = 0, $max = 0x7fffffff)
     {
         $bytes_required = min(4, ceil(log($max - $min, 2) / 8) + 1);
         $bytes = self::getBinary($bytes_required);
-        $offset = abs(hexdec(bin2hex($bytes)) % ($max - $min));
+        $offset = abs(hexdec(bin2hex($bytes)) % ($max - $min + 1));
         return intval($min + $offset);
     }
     

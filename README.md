@@ -24,7 +24,7 @@ Composer:
 How to Use
 ----------
 
-Get a random integer between two points:
+Get a random integer between two endpoints (inclusive):
 
     $random = PHPRandom::getInteger($min, $max);
 
