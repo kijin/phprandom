@@ -3,8 +3,8 @@ PHPRandom
 
 **_Just another random number/string generator for PHP 5_**
 
-This library is similar to ircmaxell/RandomLib, except it is compatible
-with PHP 5.0 and above, and comes with a much simpler interface.
+This library is similar to [ircmaxell/RandomLib](https://github.com/ircmaxell/RandomLib),
+except it is compatible with PHP 5.0 and above, and comes with a much simpler interface.
 Seriously, PHP ain't Java. Why do we need a dozen files and classes
 inheriting one another just to get some random bytes? :p
 
@@ -27,6 +27,10 @@ How to Use
 Get a random integer between two endpoints (inclusive):
 
     $random = PHPRandom::getInteger($min, $max);
+
+Get a random floating-point number between 0 and 1:
+
+    $random = PHPRandom::getFloat();
 
 Get a random alphanumeric string (0-9, a-z, A-Z):
 
@@ -67,7 +71,7 @@ Supported sources, in order of preference:
 
 Supported mixers, in order of preference:
 
-  - `hash_hmac()` with SHA-512
+  - `hash_hmac()` with SHA-256
   - `sha1()`
 
 License

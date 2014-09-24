@@ -144,13 +144,13 @@ class PHPRandom
         $mixer_content = end($entropy);
         $mixer_output = '';
         
-        if (function_exists('hash_hmac') && in_array('sha512', hash_algos()))
+        if (function_exists('hash_hmac') && in_array('sha256', hash_algos()))
         {
-            for ($i = 0; $i < $length; $i += 64)
+            for ($i = 0; $i < $length; $i += 32)
             {
                 foreach ($entropy as $item)
                 {
-                    $mixer_content = hash_hmac('sha512', $item, $mixer_content . $i, true);
+                    $mixer_content = hash_hmac('sha256', $item, $mixer_content . $i, true);
                 }
                 $mixer_output .= $mixer_content;
             }
