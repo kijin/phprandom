@@ -32,7 +32,7 @@ class PHPRandom
 {
     // Le version, what else?
     
-    const VERSION = '1.1.0';
+    const VERSION = '1.2.0';
     
     // Remember the list of sources from the last operation.
     
@@ -46,6 +46,14 @@ class PHPRandom
         $bytes = self::getBinary($bytes_required);
         $offset = abs(hexdec(bin2hex($bytes)) % ($max - $min + 1));
         return intval($min + $offset);
+    }
+    
+    // Get a random floating-point number between 0 and 1.
+    
+    public static function getFloat()
+    {
+        $bytes = self::getBinary(8);
+        return abs(hexdec(bin2hex($bytes))) / pow(2, 64);
     }
     
     // Get a random alphanumeric string of the specified length.
