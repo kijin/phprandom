@@ -45,6 +45,27 @@ class PHPRandom_UnitTest extends PHPUnit_Framework_TestCase
         $this->assertGreaterThan(100, $distribution);
     }
     
+    public function test_float()
+    {
+        $count = 10000;
+        $buckets = array_fill(0, 100, 0);
+        for ($i = 0; $i < $count; $i++)
+        {
+            $number = PHPRandom::getFloat();
+            $number = floor($number * 100);
+            $this->assertEquals(true, isset($buckets[$number]));
+            $buckets[$number]++;
+        }
+        
+        $distribution = 0;
+        for ($i = 0; $i < 100; $i++)
+        {
+            if ($buckets[$i] > ($count / 100) * 0.5) $distribution++;
+            if ($buckets[$i] < ($count / 100) * 1.5) $distribution++;
+        }
+        $this->assertGreaterThan(100, $distribution);
+    }
+    
     public function test_string()
     {
         $count = 2000;
